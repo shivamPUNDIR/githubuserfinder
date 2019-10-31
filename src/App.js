@@ -1,9 +1,10 @@
 // import React from 'react';
-import React,{Component} from 'react'
+import React, { Component } from 'react'
 import Navbar from './components/layout/Navbar'
 //import UserItem from './components/users/UserItem'
 import Users from './components/users/Users'
 import './App.css';
+import axios from 'axios'
 //default app
 
 // function App() {
@@ -15,17 +16,27 @@ import './App.css';
 // }
 //React.Fragment===Ghost elementor===<>  <>
 class App extends Component {
-    
-     render(){
-      return(<div className = "App" > 
+  state={
+    users:[],
+    loading:false//for spinner
+  }
+  async componentDidMount(){
+    //this.state.loading=true
+    this.setState({loading:true})
+    const res=await axios.get('https://api.github.com/users')
+    // .then(res=>{console.log(res.data)})
+    this.setState({loading:false,users:res.data})
+  }
+  render() {
+    return (<div className="App" >
       <Navbar></Navbar>
       <div className="container">
-      <Users></Users>
+        <Users loading={this.state.loading} users={this.state.users}></Users>
       </div>
-     
-      </div>)
-     }
-    //   return React.createElement('div',{className:'App'},React.createElement('h1',null,'Hello from React.'),React.createElement('div',{className:'HELLO'},React.createElement('h2',null,'This is nested h2.')))
+
+    </div>)
   }
+  //   return React.createElement('div',{className:'App'},React.createElement('h1',null,'Hello from React.'),React.createElement('div',{className:'HELLO'},React.createElement('h2',null,'This is nested h2.')))
+}
 
 export default App;
