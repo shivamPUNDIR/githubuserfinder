@@ -16,16 +16,18 @@ import axios from 'axios'
 // }
 //React.Fragment===Ghost elementor===<>  <>
 class App extends Component {
-  state={
-    users:[],
-    loading:false//for spinner
+  state = {
+    users: [],
+    loading: false//for spinner
   }
-  async componentDidMount(){
+  async componentDidMount() {
+    // console.log(process.env.REACT_APP_GITHUB_CLIENT_ID)
     //this.state.loading=true
-    this.setState({loading:true})
-    const res=await axios.get('https://api.github.com/users')
+    this.setState({ loading: true })
+    const res = await axios.get(`https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
     // .then(res=>{console.log(res.data)})
-    this.setState({loading:false,users:res.data})
+    
+    this.setState({ loading: false, users: res.data })
   }
   render() {
     return (<div className="App" >
