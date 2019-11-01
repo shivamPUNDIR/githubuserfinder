@@ -1,5 +1,5 @@
 // import React from 'react';
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import Navbar from './components/layout/Navbar'
 //import UserItem from './components/users/UserItem'
 import Users from './components/users/Users'
@@ -7,7 +7,8 @@ import './App.css';
 import axios from 'axios'
 import Search from './components/users/Search'
 import Alert from './components/layout/Alert'
-
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import About from './components/pages/About'
 //default app
 
 // function App() {
@@ -22,9 +23,9 @@ class App extends Component {
   state = {
     users: [],
     loading: false,//for spinner
-    alert:null
+    alert: null
   }
-  
+
   // async componentDidMount() {
   //   // console.log(process.env.REACT_APP_GITHUB_CLIENT_ID)
   //   //this.state.loading=true
@@ -43,27 +44,39 @@ class App extends Component {
   clearUsers = () => {
     this.setState({ users: [], loading: false })
   }
-  setAlert=(msg,type)=>{
+  setAlert = (msg, type) => {
     //console.log(text)
     //console.log(this.state)
-    this.setState({alert:{msg:msg,type:type}})
+    this.setState({ alert: { msg: msg, type: type } })
     // console.log(this.state)
-    setTimeout(()=>{
-      this.setState({alert:null})
-    },2000)
+    setTimeout(() => {
+      this.setState({ alert: null })
+    }, 2000)
   }
   render() {
-    const {users,loading}=this.state
-    return (<div className="App" >
-      <Navbar></Navbar>
+    const { users, loading } = this.state
+    return (<Router>
+      <div className="App" >
+        <Navbar></Navbar>
 
-      <div className="container">
-        <Alert alert={this.state.alert}></Alert>
-        <Search searchUsers={this.searchUsers} clearUsers={this.clearUsers} showClear={users.length > 0 ? true : false} setAlert={this.setAlert}></Search>
-        <Users loading={loading} users={users}></Users>
+        <div className="container">
+          <Alert alert={this.state.alert}></Alert>
+          <Switch>
+            <Route exact path='/' render={props => {
+              return(<Fragment>
+                <Search searchUsers={this.searchUsers} clearUsers={this.clearUsers} showClear={users.length > 0 ? true : false} setAlert={this.setAlert}></Search>
+                <Users loading={loading} users={users}></Users>
+              </Fragment>)
+              
+            }} />
+            <Route exact path='/about'>
+              <About/>
+            </Route>
+          </Switch>
+        </div>
+
       </div>
-
-    </div>)
+    </Router>)
   }
   //   return React.createElement('div',{className:'App'},React.createElement('h1',null,'Hello from React.'),React.createElement('div',{className:'HELLO'},React.createElement('h2',null,'This is nested h2.')))
 }

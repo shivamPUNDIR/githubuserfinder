@@ -1,5 +1,6 @@
 import React  from 'react'
 import PropTypes from 'prop-types'
+import {Link}from 'react-router-dom'
 
 // import './App.css'
 // class Navbar extends Component {
@@ -36,6 +37,22 @@ const Navbar=({title,icon})=>{
         <nav className="navbar bg-primary">
                 <h1>{title}</h1>
                 <i className={icon}></i>
+                {/* <ul>
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+                </ul> RELOADS THE PAGE USE LINK FROM REACT-ROUTER-DOM*/}
+                <ul>
+                    <li>
+                        <Link to="/">Home</Link>
+                    </li>
+                    <li>
+                        <Link to="/about">About</Link>
+                    </li>
+                </ul>
             </nav>
     )
 }
