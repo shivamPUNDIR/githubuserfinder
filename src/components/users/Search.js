@@ -15,6 +15,7 @@ export class Search extends Component {
         searchUsers: PropTypes.func.isRequired,
         clearUsers: PropTypes.func.isRequired,
         showClear: PropTypes.bool.isRequired,
+        setAlert:PropTypes.func.isRequired,
     }
     // onSubmit(e){
     //     e.preventDefault()
@@ -24,10 +25,15 @@ export class Search extends Component {
     //so we use arrrow function which uses parent's this keyword
     onSubmit = e => {
         e.preventDefault()
-        //console.log(this.state)
-        this.props.searchUsers(this.state.text)
-        //WE ARE SENDIND A PROP UP INSTEAD OF SENDING IT DOWN
-        this.setState({ text: '' })
+        if (this.state.text === '') {
+            this.props.setAlert('please enter something!!', 'light')
+        } else {
+            //console.log(this.state)
+            this.props.searchUsers(this.state.text)
+            //WE ARE SENDIND A PROP UP INSTEAD OF SENDING IT DOWN
+            this.setState({ text: '' })
+        }
+
     }
     render() {
         return (

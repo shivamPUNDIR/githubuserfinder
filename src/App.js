@@ -6,7 +6,7 @@ import Users from './components/users/Users'
 import './App.css';
 import axios from 'axios'
 import Search from './components/users/Search'
-import PropTypes from 'prop-types'
+import Alert from './components/layout/Alert'
 
 //default app
 
@@ -21,13 +21,10 @@ import PropTypes from 'prop-types'
 class App extends Component {
   state = {
     users: [],
-    loading: false//for spinner
+    loading: false,//for spinner
+    alert:null
   }
-  static propTypes = {
-    searchUsers: PropTypes.func.isRequired,
-    clearUsers: PropTypes.func.isRequired,
-    showClear: PropTypes.bool.isRequired,
-  }
+  
   // async componentDidMount() {
   //   // console.log(process.env.REACT_APP_GITHUB_CLIENT_ID)
   //   //this.state.loading=true
@@ -46,13 +43,23 @@ class App extends Component {
   clearUsers = () => {
     this.setState({ users: [], loading: false })
   }
+  setAlert=(msg,type)=>{
+    //console.log(text)
+    //console.log(this.state)
+    this.setState({alert:{msg:msg,type:type}})
+    // console.log(this.state)
+    setTimeout(()=>{
+      this.setState({alert:null})
+    },2000)
+  }
   render() {
     const {users,loading}=this.state
     return (<div className="App" >
       <Navbar></Navbar>
 
       <div className="container">
-        <Search searchUsers={this.searchUsers} clearUsers={this.clearUsers} showClear={users.length > 0 ? true : false}></Search>
+        <Alert alert={this.state.alert}></Alert>
+        <Search searchUsers={this.searchUsers} clearUsers={this.clearUsers} showClear={users.length > 0 ? true : false} setAlert={this.setAlert}></Search>
         <Users loading={loading} users={users}></Users>
       </div>
 
