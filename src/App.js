@@ -23,8 +23,10 @@ class App extends Component {
     users: [],
     loading: false//for spinner
   }
-  static propTypes={
-    searchUsers:PropTypes.func.isRequired,
+  static propTypes = {
+    searchUsers: PropTypes.func.isRequired,
+    clearUsers: PropTypes.func.isRequired,
+    showClear: PropTypes.bool.isRequired,
   }
   // async componentDidMount() {
   //   // console.log(process.env.REACT_APP_GITHUB_CLIENT_ID)
@@ -41,13 +43,17 @@ class App extends Component {
     const res = await axios.get(`https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
     this.setState({ loading: false, users: res.data.items })
   }
+  clearUsers = () => {
+    this.setState({ users: [], loading: false })
+  }
   render() {
+    const {users,loading}=this.state
     return (<div className="App" >
       <Navbar></Navbar>
 
       <div className="container">
-        <Search searchUsers={this.searchUsers}></Search>
-        <Users loading={this.state.loading} users={this.state.users}></Users>
+        <Search searchUsers={this.searchUsers} clearUsers={this.clearUsers} showClear={users.length > 0 ? true : false}></Search>
+        <Users loading={loading} users={users}></Users>
       </div>
 
     </div>)
